@@ -5,7 +5,7 @@ HOST=$(cat vcsa-credentials | jq -r .hostname)
 DOMAIN=$(cat vcsa-credentials | jq -r .domain)
 
 function login {
-	URL="https://vcenter.lab/rest/com/vmware/cis/session"
+	URL="https://$HOST/rest/com/vmware/cis/session"
 	curl -k -X POST \
 	-u $USER:$PASS \
 	"$URL" 2>/dev/null
