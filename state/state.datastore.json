@@ -1,0 +1,18 @@
+{
+	"value": [
+		{
+			"datastore": "datastore-1025",
+			"name": "ds-esx01",
+			"type": "VMFS",
+			"free_space": 82583748608,
+			"capacity": 107105746944
+		},
+		{
+			"datastore": "datastore-11",
+			"name": "datastore1",
+			"type": "VMFS",
+			"free_space": 404703150080,
+			"capacity": 504121786368
+		}
+	]
+}

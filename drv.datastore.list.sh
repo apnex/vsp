@@ -1,17 +1,12 @@
 #!/bin/bash
 source drv.core
+source drv.vsp.client
 
-#MOREF=$1
-#if [ ! -z "$MOREF" ]; then
-#	MOREF="/$1"
-#fi
-
-URL="https://$HOST/rest/vcenter/datastore"
-printf "Retrieving [$URL]... " 1>&2
-RESPONSE=$(curl -k -w "%{http_code}" -X GET \
--H "vmware-api-session-id: $SESSION" \
--H "Content-Type: application/json" \
-"$URL" 2>/dev/null)
-isSuccess "$RESPONSE"
-echo "$HTTPBODY"
-
+if [[ -n "${VSPHOST}" ]]; then
+	ITEM="datastore"
+	URL=$(buildURL "${ITEM}")
+	if [[ -n "${URL}" ]]; then
+		printf "[$(cgreen "INFO")]: vsp [$(cgreen "list")] ${ITEM} [$(cgreen "$URL")]... " 1>&2
+		vspGet "${URL}"
+	fi
+fi

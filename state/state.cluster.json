@@ -1,0 +1,16 @@
+{
+	"value": [
+		{
+			"drs_enabled": true,
+			"cluster": "domain-c1022",
+			"name": "cmp",
+			"ha_enabled": false
+		},
+		{
+			"drs_enabled": true,
+			"cluster": "domain-c7",
+			"name": "mgmt",
+			"ha_enabled": false
+		}
+	]
+}

@@ -1,14 +1,25 @@
 #!/bin/bash
 source drv.core
+source drv.vsp.client
+VMSPEC=${1}
 
-SPEC=$1
+function makeBody {
+	BODY=$(cat spec/"${1}")
+	printf "${BODY}"
+}
 
-URL="https://$HOST/rest/vcenter/vm"
-printf "Retrieving [$URL]... " 1>&2
-RESPONSE=$(curl -k -w "%{http_code}" -X POST \
--H "vmware-api-session-id: $SESSION" \
--H "Content-Type: application/json" \
--d @$SPEC \
-"$URL" 2>/dev/null)
-isSuccess "$RESPONSE"
-echo "$HTTPBODY"
+if [[ -n "${VMSPEC}" ]]; then
+	if [[ -n "${VSPHOST}" ]]; then
+		BODY=$(makeBody "${VMSPEC}")
+		ITEM="vm"
+		CALL=""
+		URL=$(buildURL "${ITEM}${CALL}")
+		if [[ -n "${URL}" ]]; then
+			printf "[$(cgreen "INFO")]: vsp [$(cgreen "vm.create")] ${ITEM} [$(cgreen "${URL}")]... " 1>&2
+			vspPost "${URL}" "${BODY}"
+		fi
+	fi
+else
+	printf "[$(corange "ERROR")]: command usage: $(cgreen "vm.create") $(ccyan "<spec-name>")\n" 1>&2
+fi
+

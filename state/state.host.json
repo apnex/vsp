@@ -1,0 +1,15 @@
+{
+	"value": [
+		{
+			"host": "host-10",
+			"name": "sddc.lab",
+			"connection_state": "CONNECTED",
+			"power_state": "POWERED_ON"
+		},
+		{
+			"host": "host-1024",
+			"name": "esx01.lab",
+			"connection_state": "NOT_RESPONDING"
+		}
+	]
+}

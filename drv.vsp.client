@@ -1,0 +1,88 @@
+#!/bin/bash
+VSPUSER=$(cat vsp-credentials | jq -r .username)
+VSPPASS=$(cat vsp-credentials | jq -r .password)
+VSPHOST=$(cat vsp-credentials | jq -r .hostname)
+VSPDOMAIN=$(cat vsp-credentials | jq -r .domain)
+VSPONLINE=$(cat vsp-credentials | jq -r .online)
+
+function vspLogin {
+	URL="https://${VSPHOST}/rest/com/vmware/cis/session"
+	curl -k -X POST \
+	-u ${VSPUSER}:${VSPPASS} \
+	"${URL}" 2>/dev/null
+}
+
+function vspSession {
+	if [[ "$VSPONLINE" == "true" ]]; then
+		SESSIONFILE='vmware-api-session-id'
+		#printf "Validating existing session...\n" 1>&2
+		if [ -f $SESSIONFILE ]; then
+			MYDATE=$(stat -c %y "$SESSIONFILE")
+			LAPSE="$(($(date '+%s') - $(date -d "$MYDATE" '+%s')))"
+			#printf "File [$SESSIONFILE] exists - age [$LAPSE]\n" 1>&2
+			if [ "$LAPSE" -ge 600 ]; then
+				printf "Session older than [600] seconds, reauthenticating...\n" 1>&2
+				vspLogin | jq -r '.value' > "$SESSIONFILE"
+			fi
+		else
+			printf "File [$SESSIONFILE] does not exist - authenticating...\n" 1>&2
+			vspLogin | jq -r '.value' > "$SESSIONFILE"
+		fi
+		#VSPSESSION=$(cat "$SESSIONFILE")
+	fi
+}
+
+function vspPost {
+	local URL=${1}
+	local BODY=${2}
+	if [[ "$VSPONLINE" == "true" ]]; then
+		RESPONSE=$(curl -k -w "%{http_code}" -X POST \
+		-H "vmware-api-session-id: $(cat vmware-api-session-id)" \
+		-H "Content-Type: application/json" \
+		-d "$BODY" \
+		"$URL" 2>/dev/null)
+		RESULT=$(isSuccess "${RESPONSE}")
+	else
+		printf "[$(ccyan "OFFLINE")] - SUCCESS\n" 1>&2
+	fi
+	printf "%s\n" "${RESULT}" | jq --tab .
+}
+
+function vspDelete {
+	local URL=${1}
+	local BODY=${2}
+	if [[ "$VSPONLINE" == "true" ]]; then
+		#NSXFILE=$(getFile "${1}")
+		RESPONSE=$(curl -k -w "%{http_code}" -G -X DELETE \
+		-H "vmware-api-session-id: $(cat vmware-api-session-id)" \
+		-H "Content-Type: application/x-form-urlencoded" \
+		--data-urlencode "$BODY" \
+		"$URL" 2>/dev/null)
+		RESULT=$(isSuccess "${RESPONSE}")
+	else
+		printf "[$(ccyan "OFFLINE")] - SUCCESS\n" 1>&2
+		#NSXFILE="${URL}"
+	fi
+	#work out state synch for deletes
+	#printf "rm ${NSXFILE}"
+	printf "%s\n" "${RESULT}" | jq --tab .
+}
+
+function vspGet {
+	local URL=${1}
+	local STFILE
+	if [[ "$VSPONLINE" == "true" ]]; then
+		STATE=$(getFile "${URL}")
+		RESPONSE=$(curl -k -w "%{http_code}" -X GET \
+		-H "vmware-api-session-id: $(cat vmware-api-session-id)" \
+		-H "Content-Type: application/json" \
+		"$URL" 2>/dev/null)
+		RESULT=$(isSuccess "${RESPONSE}")
+	else
+		printf "[$(ccyan "OFFLINE")] - SUCCESS\n" 1>&2
+		RESULT=$(cat "${URL}")
+		STATE="${URL}"
+	fi
+	printf "%s\n" "${RESULT}" | jq --tab . > "${STATE}"
+	printf "%s\n" "${RESULT}" | jq --tab .
+}
