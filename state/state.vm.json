@@ -39,7 +39,7 @@
 			"memory_size_MiB": 8192,
 			"vm": "vm-1285",
 			"name": "pks-manager",
-			"power_state": "POWERED_ON",
+			"power_state": "POWERED_OFF",
 			"cpu_count": 1
 		},
 		{
