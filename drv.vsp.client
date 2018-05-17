@@ -8,6 +8,9 @@ VSPUSER=$(cat sddc.parameters | jq -r '.endpoints[] | select(.type=="vsp").usern
 VSPPASS=$(cat sddc.parameters | jq -r '.endpoints[] | select(.type=="vsp").password')
 VSPONLINE=$(cat sddc.parameters | jq -r '.endpoints[] | select(.type=="vsp").online')
 SESSIONFILE='state/vmware-api-session-id'
+if [ ! -d state ]; then
+	mkdir state;
+fi
 
 function vspLogin {
 	URL="https://${VSPHOST}/rest/com/vmware/cis/session"
