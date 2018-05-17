@@ -11,7 +11,7 @@
 			"datastore": "datastore-11",
 			"name": "datastore1",
 			"type": "VMFS",
-			"free_space": 404538523648,
+			"free_space": 403388235776,
 			"capacity": 504121786368
 		}
 	]

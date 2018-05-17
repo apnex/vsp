@@ -20,16 +20,24 @@ Perform the following command to download the scripts - this will create a direc
 git clone https://github.com/apnex/vc
 ```
 
-#### 3: Set up vCenter credentials
-Modify the `vcsa-credentials` file to reflect the parameters for your lab.
-I recommended using an FQDN of vcenter for the `hostname`.
+#### 3: Set up SDDC parameters
+Modify the `sddc.parameters` file to reflect the parameters for your lab.
+Configure the vCenter `endpoint` as appropriate.
+Connection attempts will be made to a concatenation of `hostname`.`domain` - or simply `hostname` if `hostname` is an IP address
 
 ```json
 {
-	"hostname": "vcenter.lab",
-	"username": "administrator@vsphere.local",
-	"password": "VMware1!",
-	"domain": "lab"
+	"dns": "172.16.0.1",
+	"domain": "lab",
+	"endpoints": [
+		{
+			"type": "vsp",
+			"hostname": "vcenter",
+			"username": "administrator@vsphere.local",
+			"password": "VMware1!",
+			"online": "true"
+		}
+	]
 }
 ```
 

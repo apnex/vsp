@@ -1,0 +1,19 @@
+# test colors in bash with delta from previous
+# work out node.js code to stream and render table
+# work out node.js code to parse nsx-api.json and build min (write), max (write), full (read & write) spec
+# build drv.nsx.client code, leverage new sddc.status.sh output
+# work out where session is called, have it handle failure to auth and not create session file
+# work out state - delete and post
+## for nodes.status - remove individual node file when a delete occurs
+## same for any individual delete action
+# work out how to handle "context" when issuing a "create" spec - for auto population of default values
+## leverage T0 anchor for environment? 
+-- tag t0 {ncp/shared_resource: true}
+-- tzone {ncp/shared_resource: true}
+-- block {ncp/shared_resource: true}
+-- pool {ncp/shared_resource: true}, {ncp/external: true}
+
+# prepare git repo for svg engine (give it a name?)
+# mock some diagrams
+
+# revisit docker git repos and consolidate
