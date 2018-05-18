@@ -77,7 +77,7 @@ function getFile {
 }
 
 function buildURL {
-	local ENDPOINT=${1}
+	local ENDPOINT="${1}"
 	local BASE="https://$VSPHOST/rest/vcenter/"
 	if [[ "$VSPONLINE" == "true" ]]; then
 		vspSession
