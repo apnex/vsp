@@ -106,4 +106,3 @@ function getCertificate {
 	RESULT=$(echo "${PAYLOAD}" |  sed -e '1h;2,$H;$!d;g' -e 's/.*\(-----BEGIN\sCERTIFICATE-----.*-----END\sCERTIFICATE-----\).*/\1/g')
 	printf "%s\n" "$RESULT" | sed ':a;N;$!ba;s/\n/\\\\n/g'
 }
-
