@@ -15,9 +15,9 @@ apt-get install curl jq
 ```
 
 #### 2: Clone repository from GitHub
-Perform the following command to download the scripts - this will create a directory `vc` on your local machine
+Perform the following command to download the scripts - this will create a directory `vsp` on your local machine
 ```shell
-git clone https://github.com/apnex/vc
+git clone https://github.com/apnex/vsp
 ```
 
 #### 3: Set up SDDC parameters
