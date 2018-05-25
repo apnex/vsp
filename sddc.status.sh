@@ -10,7 +10,7 @@ read -r -d '' JQSPEC <<CONFIG
 	| @csv
 CONFIG
 if [[ "$RAW" == "json" ]]; then
-	printf "%s\n" "$PAYLOAD" | jq --tab .
+	echo "$PAYLOAD" | jq --tab .
 else
-	printf "%s\n" "$PAYLOAD" | jq -r "$JQSPEC" | sed 's/"//g' | column -s ',' -t
+	echo "$PAYLOAD" | jq -r "$JQSPEC" | sed 's/"//g' | column -s ',' -t
 fi

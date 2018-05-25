@@ -44,7 +44,7 @@ function isSuccess {
 	else
 		printf "[$(ccyan "${CODE}")] - ERROR\n" 1>&2
 	fi
-	printf "${BODY}"
+	printf "%s\n" "${BODY}"
 }
 
 function getFile {

@@ -1,17 +1,24 @@
 #!/bin/bash
-echo "Exporting all known [vsp] state..."
+source drv.core
 
-rm ./state/*json
-read -r -d '' SPECS <<-CONFIG
-	"drv.cluster.list.sh"
-	"drv.datastore.list.sh"
-	"drv.network.list.sh"
-	"drv.host.list.sh"
-	"drv.vm.list.sh"
-CONFIG
-for key in $(echo ${SPECS}); do
-	RUNFILE="./${key}"
-	eval ${RUNFILE} 1>/dev/null
+# export configuration for offline cli use
+echo "Exporting all known specs - calling all list|status drivers..."
+
+# rework to leverage drv.sddc.status?
+if [[ "${NSXONLINE}" == "true" ]]; then
+	printf "[$(cgreen "INFO")]: nsx [$(cgreen "online")]... [$(ccyan "TRUE")] - SUCCESS\n" 1>&2
+	if [[ -f state ]]; then
+		rm ./state/*json
+	fi
+else
+	printf "[$(corange "WARN")]: nsx [$(cgreen "online")]... [$(ccyan "FALSE")] - SUCCESS\n" 1>&2
+fi
+
+for KEY in *; do
+	if [[ "${KEY}" =~ drv[.].*[.](list|status)[.]sh ]]; then
+		RUNFILE="./${KEY}"
+		eval ${RUNFILE} 1>/dev/null
+	fi
 done
 
 echo "Export completed"

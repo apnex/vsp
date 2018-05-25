@@ -1,12 +1,12 @@
 #!/bin/bash
 source drv.core
 source drv.vsp.client
-VMID=${1}
 
-if [[ -n "${VMID}" ]]; then
+ID=${1}
+if [[ -n "${ID}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		ITEM="vm"
-		CALL="/${VMID}/power/stop"
+		CALL="/${ID}/power/stop"
 		URL=$(buildURL "${ITEM}${CALL}")
 		if [[ -n "${URL}" ]]; then
 			printf "[$(cgreen "INFO")]: vsp [$(cgreen "vm.stop")] ${ITEM} [$(cgreen "${URL}")]... " 1>&2
