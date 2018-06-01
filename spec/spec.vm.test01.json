@@ -33,7 +33,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-18"
+					"network": "dvportgroup-24"
 				}
 			}
 		]

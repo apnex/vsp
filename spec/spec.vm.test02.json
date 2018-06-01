@@ -4,8 +4,8 @@
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
 			"folder": "group-v3",
-			"host": "host-862",
-			"datastore": "datastore-863"
+			"host": "host-10",
+			"datastore": "datastore-11"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -33,7 +33,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-18"
+					"network": "dvportgroup-24"
 				}
 			}
 		]
