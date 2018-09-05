@@ -15,7 +15,7 @@
 			"cores_per_socket": 4
 		},
 		"memory": {
-			"size_MiB": 16384
+			"size_MiB": 8192
 		},
 		"disks": [
 			{
@@ -46,7 +46,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-18"
+					"network": "dvportgroup-82"
 				}
 			},
 			{
@@ -57,7 +57,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-34"
+					"network": "dvportgroup-82"
 				}
 			}
 		]

@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# get OSNAME
+OSNAME="$(uname -s)"
+case "${OSNAME}" in
+	Linux*)
+		#printf "HAHA you run ${OSNAME}\n" 1>&2
+	;;
+	Darwin*)
+		#printf "HAHA you run a ${OSNAME}\n" 1>&2
+	;;
+esac
+
 # COLOURS
 NC='\033[0m' # no colour
 BLACK='\033[0;30m' # black
@@ -49,6 +60,7 @@ function isSuccess {
 
 function getFile {
 	local ENDPOINT=${1}
+	local STATE="state.default"
 	case "${ENDPOINT}" in
 		*"vm"*)
 			REGEX='vm/([^\/]+)/([^\/]+)$'
@@ -78,9 +90,9 @@ function getFile {
 
 function buildURL {
 	local ENDPOINT="${1}"
-	local BASE="https://$VSPHOST/rest/vcenter/"
-	if [[ "$VSPONLINE" == "true" ]]; then
-		vspSession
+	local BASE="https://vmc.vmware.com/vmc/api/"
+	if [[ "$VMCONLINE" == "true" ]]; then
+		vmcSession
 		URL="$BASE$ENDPOINT"
 	else
 		URL=$(getFile "${ENDPOINT}")

@@ -1,0 +1,3 @@
+service-control --stop vmware-vapi-endpoint
+service-control --start vmware-vapi-endpoint
+service-control --status vmware-vapi-endpoint

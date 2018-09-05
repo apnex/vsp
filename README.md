@@ -14,6 +14,17 @@ yum install curl jq
 apt-get install curl jq
 ```
 
+##### Mac OSX
+Install brew
+```shell
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
+```
+
+Install curl & jq
+```shell
+brew install curl jq
+```
+
 #### 2: Clone repository from GitHub
 Perform the following command to download the scripts - this will create a directory `vsp` on your local machine
 ```shell
