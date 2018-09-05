@@ -4,10 +4,10 @@
 OSNAME="$(uname -s)"
 case "${OSNAME}" in
 	Linux*)
-		#printf "HAHA you run ${OSNAME}\n" 1>&2
+		#printf "HAHA you run LINUX\n" 1>&2
 	;;
 	Darwin*)
-		#printf "HAHA you run a ${OSNAME}\n" 1>&2
+		#printf "HAHA you run DARWIN\n" 1>&2
 	;;
 esac
 
@@ -90,9 +90,9 @@ function getFile {
 
 function buildURL {
 	local ENDPOINT="${1}"
-	local BASE="https://vmc.vmware.com/vmc/api/"
-	if [[ "$VMCONLINE" == "true" ]]; then
-		vmcSession
+	local BASE="https://$VSPHOST/rest/vcenter/"
+	if [[ "$VSPONLINE" == "true" ]]; then
+		vspSession
 		URL="$BASE$ENDPOINT"
 	else
 		URL=$(getFile "${ENDPOINT}")
