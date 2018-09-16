@@ -1,0 +1,80 @@
+{
+	"Deployment": "tiny",
+	"DiskProvisioning": "thin",
+	"IPAllocationPolicy": "dhcpPolicy",
+	"IPProtocol": "IPv4",
+	"InjectOvfEnv": true,
+	"Name": "VCSA-60u2-Embedded",
+	"PowerOn": true,
+	"PropertyMapping": [
+		{
+			"Key": "guestinfo.cis.appliance.net.addr.family",
+			"Value": "ipv4"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.net.mode",
+			"Value": "static"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.net.addr",
+			"Value": "192.168.1.40"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.net.prefix",
+			"Value": "24"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.net.gateway",
+			"Value": "192.168.1.1"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.net.dns.servers",
+			"Value": "192.168.1.1"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.net.pnid",
+			"Value": "192.168.1.40"
+		},
+		{
+			"Key": "guestinfo.cis.vmdir.password",
+			"Value": "VMware1!"
+		},
+		{
+			"Key": "guestinfo.cis.vmdir.domain-name",
+			"Value": "vghetto.local"
+		},
+		{
+			"Key": "guestinfo.cis.vmdir.site-name",
+			"Value": "virtuallyGhetto"
+		},
+		{
+			"Key": "guestinfo.cis.vmdir.first-instance",
+			"Value": "True"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.root.passwd",
+			"Value": "VMware1!"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.root.shell",
+			"Value": "False"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.ssh.enabled",
+			"Value": "False"
+		},
+		{
+			"Key": "guestinfo.cis.appliance.ntp.servers",
+			"Value": "pool.ntp.org"
+		},
+		{
+			"Key": "guestinfo.cis.deployment.node.type",
+			"Value": "embedded"
+		},
+		{
+			"Key": "guestinfo.cis.ceip_enabled",
+			"Value": "False"
+		}
+	],
+	"WaitForIP": false
+}

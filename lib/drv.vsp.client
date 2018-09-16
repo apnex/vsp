@@ -1,0 +1,112 @@
+#!/bin/bash
+STATEDIR="${WORKDIR}/state"
+if [ ! -d ${STATEDIR} ]; then
+	mkdir ${STATEDIR}
+fi
+if [ -z ${SDDCDIR} ]; then
+	SDDCDIR=${WORKDIR}
+fi
+
+PARAMS=$(cat ${SDDCDIR}/sddc.parameters)
+DOMAIN=$(echo "$PARAMS" | jq -r '.domain')
+VSPHOST=$(echo "$PARAMS" | jq -r '.endpoints[] | select(.type=="vsp").hostname')
+if [[ ! "$VSPHOST" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+	VSPHOST+=".$DOMAIN" #if not an IP, append domain
+fi
+VSPUSER=$(echo "$PARAMS" | jq -r '.endpoints[] | select(.type=="vsp").username')
+VSPPASS=$(echo "$PARAMS" | jq -r '.endpoints[] | select(.type=="vsp").password')
+VSPONLINE=$(echo "$PARAMS" | jq -r '.endpoints[] | select(.type=="vsp").online')
+VSPPRINT=$(${WORKDIR}/drv.sddc.status.sh | jq -r '.[] | select(.type=="vsp").thumbprint')
+VSPSESSION="${STATEDIR}/vsp.vmware-api-session-id"
+
+function vspLogin {
+	local URL="https://${VSPHOST}/rest/com/vmware/cis/session"
+	local RESPONSE=$(curl -k -X POST \
+		-u ${VSPUSER}:${VSPPASS} \
+	"${URL}" 2>/dev/null)
+	echo "${RESPONSE}" | jq -r '.value'
+}
+
+function vspSession {
+	local SESSION=$VSPSESSION
+	local ONLINE=$VSPONLINE
+	if [[ "$ONLINE" == "true" ]]; then
+		if [ -f $SESSION ]; then
+			local RUNFIND="$(find ${SESSION} -cmin +10)"
+			if [ -n "$RUNFIND" ]; then
+				printf "Session older than [600] seconds, reauthenticating...\n" 1>&2
+				vspLogin >"$SESSION"
+			fi
+		else
+			printf "File [$SESSION] does not exist - authenticating...\n" 1>&2
+			vspLogin >"$SESSION"
+		fi
+	fi
+}
+
+function vspGet {
+	local URL=${1}
+	if [[ "$VSPONLINE" == "true" ]]; then
+		local FILE=$(getFile "${URL}" "${VSPBASE}")
+		STATE="${STATEDIR}/vsp${FILE}"
+		RESPONSE=$(curl -k -w "%{http_code}" -X GET \
+			-H "vmware-api-session-id: $(cat ${VSPSESSION})" \
+			-H "Content-Type: application/json" \
+		"$URL" 2>/dev/null)
+		RESULT=$(isSuccess "${RESPONSE}")
+	else
+		printf "[$(ccyan "OFFLINE")] - SUCCESS\n" 1>&2
+		RESULT=$(cat "${URL}")
+		STATE="${URL}"
+	fi
+	printf "%s\n" "${RESULT}" | jq --tab . >"${STATE}"
+	printf "%s\n" "${RESULT}" | jq --tab .
+}
+
+function vspPost {
+	local URL=${1}
+	local BODY=${2}
+	if [[ "$VSPONLINE" == "true" ]]; then
+		#STATE=$(getFile "${URL}")
+		RESPONSE=$(curl -k -w "%{http_code}" -X POST \
+			-H "vmware-api-session-id: $(cat ${VSPSESSION})" \
+			-H "Content-Type: application/json" \
+			-d "$BODY" \
+		"$URL" 2>/dev/null)
+		RESULT=$(isSuccess "${RESPONSE}")
+	else
+		printf "[$(ccyan "OFFLINE")] - SUCCESS\n" 1>&2
+	fi
+	printf "%s\n" "${RESULT}" | jq --tab .
+}
+
+function vspDelete {
+	local URL=${1}
+	local BODY=${2}
+	if [[ "$VSPONLINE" == "true" ]]; then
+		#STATE=$(getFile "${URL}")
+		RESPONSE=$(curl -k -w "%{http_code}" -G -X DELETE \
+			-H "vmware-api-session-id: $(cat ${VSPSESSION})" \
+			-H "Content-Type: application/x-form-urlencoded" \
+			--data-urlencode "$BODY" \
+		"$URL" 2>/dev/null)
+		RESULT=$(isSuccess "${RESPONSE}")
+	else
+		printf "[$(ccyan "OFFLINE")] - SUCCESS\n" 1>&2
+	fi
+	#work out state synch for deletes - remove json file
+	printf "%s\n" "${RESULT}" | jq --tab .
+}
+
+function buildURL {
+	local ENDPOINT="${1}"
+	local BASE="https://$VSPHOST/rest/vcenter/"
+	if [[ "$VMCONLINE" == "true" ]]; then
+		vspSession
+		URL="$BASE$ENDPOINT"
+	else ## move getFile exclusively to get/post/delete functions
+		local FILE=$(getFile "${ENDPOINT}")
+		URL="${STATEDIR}/vsp${FILE}"
+	fi
+	printf "$URL"
+}

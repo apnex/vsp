@@ -1,6 +1,6 @@
 {
 	"spec": {
-		"name": "test03",
+		"name": "centos-hw13-02",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
 			"folder": "group-v3",

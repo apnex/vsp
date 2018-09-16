@@ -1,11 +1,11 @@
 {
 	"spec": {
-		"name": "test03",
+		"name": "test02",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
-			"folder": "group-v3",
-			"host": "host-10",
-			"datastore": "datastore-11"
+			"resource_pool": "resgroup-49",
+			"folder": "group-v44",
+			"datastore": "datastore-61"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -14,7 +14,6 @@
 			"count": 2,
 			"cores_per_socket": 2
 		},
-		"hardware_version": "VMX_13",
 		"memory": {
 			"size_MiB": 2048
 		},
@@ -34,7 +33,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-62"
+					"network": "dvportgroup-70"
 				}
 			}
 		]
