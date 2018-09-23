@@ -3,7 +3,7 @@ source drv.core
 source drv.vsp.client
 
 CLIENT_TOKEN=$(uuidgen)
-LIBRARY="978956ac-e268-4cd8-a670-9446e1d93abe"
+LIBRARY=${1}
 printf "${CLIENT_TOKEN}\n" 1>&2
 function makeBody {
 	read -r -d '' BODY <<-CONFIG
@@ -11,8 +11,8 @@ function makeBody {
 		"client_token": "$CLIENT_TOKEN",
 		"create_spec": {
 			"description": "a custom iso",
-			"library_id": "$LIBRARY",
-			"name": "alpine.iso",
+			"library_id": "${LIBRARY}",
+			"name": "alpine-virt-3.7.0-x86_64.iso",
 			"type": "iso"
 		}
 	}

@@ -8,7 +8,6 @@ printf "${CLIENT_TOKEN}\n" 1>&2
 ISO_FILE="alpine-virt-3.7.0-x86_64.iso"
 ISO_MD5=$(md5sum "${ISO_FILE}" | gawk '{print $1}')
 ISO_SIZE=$(ls -l "${ISO_FILE}" | gawk '{print $5}')
-LIBRARY_ITEM="46e06225-9fbc-4906-85d7-c08ed69232af"
 UPDATE_SESSION=$1
 #"3beb707a-1518-48bd-a974-ecab805f526f:90a55320-9f98-4410-826d-922164501224"
 

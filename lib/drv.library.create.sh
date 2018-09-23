@@ -13,7 +13,7 @@ function makeBody {
 			"name": "localLibrary",
 			"storage_backings": [
 				{
-					"datastore_id": "datastore-61",
+					"datastore_id": "datastore-11",
 					"type": "DATASTORE"
 				}
 			],
@@ -33,7 +33,7 @@ VMSPEC=${1}
 		URL=$(buildURL "${ITEM}${CALL}")
 		URL="https://${VSPHOST}/rest/com/vmware/content/local-library"
 		if [[ -n "${URL}" ]]; then
-			printf "[$(cgreen "INFO")]: vsp [$(cgreen "vm.create")] ${ITEM} [$(cgreen "${URL}")]... " 1>&2
+			printf "[$(cgreen "INFO")]: vsp [$(cgreen "library.create")] ${ITEM} [$(cgreen "${URL}")]... " 1>&2
 			vspPost "${URL}" "${BODY}"
 		fi
 	fi

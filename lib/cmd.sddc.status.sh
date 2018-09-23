@@ -6,7 +6,7 @@ fi
 PAYLOAD=$(${WORKDIR}/drv.sddc.status.sh)
 read -r -d '' JQSPEC <<-CONFIG
 	(
-		["type", "hostname", "online", "dnsfwd", "dnsrev", "ping", "thumbprint"]
+		["type", "hostname", "online", "dnsfwd", "ping", "thumbprint"]
 		| ., map(length * "-")
 	),(
 		.[] | [
@@ -14,7 +14,6 @@ read -r -d '' JQSPEC <<-CONFIG
 			.hostname,
 			.online,
 			.dnsfwd,
-			.dnsrev,
 			.ping,
 			.thumbprint
 		]

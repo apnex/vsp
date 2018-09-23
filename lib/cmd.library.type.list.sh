@@ -6,21 +6,19 @@ fi
 PAYLOAD=$(${WORKDIR}/drv.library.type.list.sh)
 read -r -d '' JQSPEC <<-CONFIG
 	(
-		["vm", "power_state", "cpu_count", "memory_size_MiB", "name"]
+		["vendor", "name", "type", "version"]
 		| ., map(length * "-")
 	),(
 		.value[] | [
-			.vm,
-			.power_state,
-			.cpu_count,
-			.memory_size_MiB,
-			.name
+			.vendor,
+			.name,
+			.type,
+			.version
 		]
 	) | @tsv
 CONFIG
 
-#RAW=${1}
-RAW="json"
+RAW=${1}
 if [[ "$RAW" == "json" ]]; then
 	echo "$PAYLOAD" | jq --tab .
 else
