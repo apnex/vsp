@@ -1,0 +1,41 @@
+{
+	"spec": {
+		"name": "boot.lab",
+		"guest_OS": "CENTOS_7_64",
+		"placement": {
+			"folder": "group-v3",
+			"host": "host-10",
+			"datastore": "datastore-11"
+		},
+		"boot": {
+			"type": "BIOS"
+		},
+		"cpu": {
+			"count": 2,
+			"cores_per_socket": 2
+		},
+		"memory": {
+			"size_MiB": 2048
+		},
+		"disks": [
+			{
+				"new_vmdk": {
+					"capacity": 21474836480
+				},
+				"type": "SCSI"
+			}
+		],
+		"nics": [
+			{
+				"start_connected": true,
+				"mac_type": "GENERATED",
+				"type": "VMXNET3",
+				"upt_compatibility_enabled": true,
+				"backing": {
+					"type": "STANDARD_PORTGROUP",
+					"network": "network-12"
+				}
+			}
+		]
+	}
+}

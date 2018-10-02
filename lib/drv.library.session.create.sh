@@ -5,9 +5,9 @@ source drv.vsp.client
 CLIENT_TOKEN=$(uuidgen)
 printf "${CLIENT_TOKEN}\n" 1>&2
 
-ISO_FILE="alpine-virt-3.7.0-x86_64.iso"
-ISO_MD5=$(md5sum "${ISO_FILE}" | gawk '{print $1}')
-ISO_SIZE=$(ls -l "${ISO_FILE}" | gawk '{print $5}')
+#ISO_FILE="alpine-virt-3.7.0-x86_64.iso"
+#ISO_MD5=$(md5sum "${ISO_FILE}" | gawk '{print $1}')
+#ISO_SIZE=$(ls -l "${ISO_FILE}" | gawk '{print $5}')
 LIBRARY_ITEM=${1}
 
 function makeBody {

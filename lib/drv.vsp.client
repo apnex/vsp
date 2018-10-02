@@ -87,6 +87,23 @@ function vspPost {
 	printf "%s\n" "${RESULT}" | jq --tab .
 }
 
+function vspPut {
+	local URL=${1}
+	local BODY=${2}
+	if [[ "$VSPONLINE" == "true" ]]; then
+		#STATE=$(getFile "${URL}")
+		RESPONSE=$(curl -k -w "%{http_code}" -X PUT \
+			-H "vmware-api-session-id: $(cat ${VSPSESSION})" \
+			-H "Content-Type: application/json" \
+			-d "$BODY" \
+		"$URL" 2>/dev/null)
+		RESULT=$(isSuccess "${RESPONSE}")
+	else
+		printf "[$(ccyan "OFFLINE")] - SUCCESS\n" 1>&2
+	fi
+	printf "%s\n" "${RESULT}" | jq --tab .
+}
+
 function vspDelete {
 	local URL=${1}
 	local BODY=${2}

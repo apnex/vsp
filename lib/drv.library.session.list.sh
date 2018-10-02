@@ -8,7 +8,6 @@ printf "${CLIENT_TOKEN}\n" 1>&2
 UPDATE_SESSION=${1}
 #if [[ -n "${VMSPEC}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
-		BODY=$(makeBody)
 		ITEM="update-session"
 		URL="https://${VSPHOST}/rest/com/vmware/content/library/item/update-session/id:${UPDATE_SESSION}"
 		if [[ -n "${URL}" ]]; then
