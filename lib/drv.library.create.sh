@@ -4,6 +4,7 @@ source drv.vsp.client
 
 CLIENT_TOKEN=$(uuidgen)
 printf "${CLIENT_TOKEN}\n" 1>&2
+printf "${CLIENT_TOKEN}" >'uuid'
 function makeBody {
 	read -r -d '' BODY <<-CONFIG
 	{

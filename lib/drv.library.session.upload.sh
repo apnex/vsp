@@ -2,14 +2,12 @@
 source drv.core
 source drv.vsp.client
 
-CLIENT_TOKEN=$(uuidgen)
+CLIENT_TOKEN=$(cat uuid)
 printf "${CLIENT_TOKEN}\n" 1>&2
 
-ISO_FILE="alpine-virt-3.7.0-x86_64.iso"
+ISO_FILE="centos.iso"
 ISO_MD5=$(md5sum "${ISO_FILE}" | gawk '{print $1}')
 ISO_SIZE=$(ls -l "${ISO_FILE}" | gawk '{print $5}')
-UPDATE_SESSION=$1
-#"3beb707a-1518-48bd-a974-ecab805f526f:90a55320-9f98-4410-826d-922164501224"
 
 function makeBody {
 	read -r -d '' BODY <<-CONFIG
@@ -20,15 +18,16 @@ function makeBody {
 				"checksum": "${ISO_MD5}"
 			},
 			"name": "${ISO_FILE}",
-			"size": ${ISO_SIZE},
+			"size": "${ISO_SIZE}",
 			"source_type": "PUSH"
 		}
 	}
 	CONFIG
 	printf "${BODY}"
+	printf "${BODY}" 1>&2
 }
 
-VMSPEC=${1}
+UPDATE_SESSION=${1}
 #if [[ -n "${VMSPEC}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		BODY=$(makeBody)

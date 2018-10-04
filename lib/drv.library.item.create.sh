@@ -2,13 +2,14 @@
 source drv.core
 source drv.vsp.client
 
-CLIENT_TOKEN=$(uuidgen)
+CLIENT_TOKEN=$(cat uuid)
 LIBRARY=${1}
+
 printf "${CLIENT_TOKEN}\n" 1>&2
+#		"client_token": "$CLIENT_TOKEN",
 function makeBody {
 	read -r -d '' BODY <<-CONFIG
 	{
-		"client_token": "$CLIENT_TOKEN",
 		"create_spec": {
 			"description": "a custom iso",
 			"library_id": "${LIBRARY}",
@@ -18,9 +19,9 @@ function makeBody {
 	}
 	CONFIG
 	printf "${BODY}"
+	printf "${BODY}" 1>&2
 }
 
-VMSPEC=${1}
 #if [[ -n "${VMSPEC}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		BODY=$(makeBody)

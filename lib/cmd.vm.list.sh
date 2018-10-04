@@ -6,15 +6,15 @@ fi
 PAYLOAD=$(${WORKDIR}/drv.vm.list.sh)
 read -r -d '' JQSPEC <<-CONFIG
 	(
-		["vm", "power_state", "cpu_count", "memory_size_MiB", "name"]
+		["id", "name",  "cpu_count", "memory_size_MiB", "power_state"]
 		| ., map(length * "-")
 	),(
 		.value[] | [
 			.vm,
-			.power_state,
+			.name,
 			.cpu_count,
 			.memory_size_MiB,
-			.name
+			.power_state
 		]
 	) | @tsv
 CONFIG

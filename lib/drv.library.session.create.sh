@@ -2,24 +2,21 @@
 source drv.core
 source drv.vsp.client
 
-CLIENT_TOKEN=$(uuidgen)
+CLIENT_TOKEN=$(cat uuid)
 printf "${CLIENT_TOKEN}\n" 1>&2
 
-#ISO_FILE="alpine-virt-3.7.0-x86_64.iso"
-#ISO_MD5=$(md5sum "${ISO_FILE}" | gawk '{print $1}')
-#ISO_SIZE=$(ls -l "${ISO_FILE}" | gawk '{print $5}')
 LIBRARY_ITEM=${1}
-
+#		"client_token": "${CLIENT_TOKEN}",
 function makeBody {
 	read -r -d '' BODY <<-CONFIG
 	{
-		"client_token": "${CLIENT_TOKEN}",
 		"create_spec": {
 			"library_item_id": "${LIBRARY_ITEM}"
 		}
 	}
 	CONFIG
 	printf "${BODY}"
+	printf "${BODY}" 1>&2
 }
 
 VMSPEC=${1}

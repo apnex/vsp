@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # build new library
-./drv.library.create.sh
+#./drv.library.create.sh
 
 # view library item types
-./drv.library.type.list.sh
+#./drv.library.type.list.sh
 
 # view datastores
-./cmd.datastore.list.sh
+#./cmd.datastore.list.sh
 
 # create library item
 ./drv.library.item.create.sh <library-id>
@@ -19,13 +19,13 @@
 ./drv.library.session.create.sh <library.item.id>
 
 # get upload endpoint
-./drv.library.session.upload.sh <session-id>
+./drv.library.session.download.sh <library.item.id>
 
 # upload file
-./drv.library.upload.sh <upload-url>
+#./drv.library.upload.sh <upload-url>
 
 # validate session
-./drv.library.session.validate.sh <session-id>
+#./drv.library.session.validate.sh <session-id>
 
 # complete session
-./drv.library.session.complete.sh <session-id>
+#./drv.library.session.complete.sh <session-id>

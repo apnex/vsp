@@ -29,16 +29,24 @@ VSPBASE="https://${VSPHOST}/rest/vcenter/"
 
 function isSuccess {
 	local STRING=${1}
-	if [[ $STRING =~ ^(.*)([0-9]{3})$ ]]; then
-		local BODY=${BASH_REMATCH[1]}
-		local CODE=${BASH_REMATCH[2]}
-	fi
+	local SESSION=$VSPSESSION
+	local CODE=$(getCode "${STRING}")
 	printf "[$(ccyan "${CODE}")] - " 1>&2
-	if [[ $CODE =~ 2..$ ]]; then
-		printf "SUCCESS\n" 1>&2
-	else
-		printf "ERROR\n" 1>&2
-	fi
+	case $CODE in
+		2[0-9][0-9])
+			printf "SUCCESS\n" 1>&2
+		;;
+		40[0-3])
+			printf "ERROR-AUTH\n" 1>&2
+			if [ -f "${SESSION}" ]; then
+				rm "${SESSION}"
+			fi
+		;;
+		*)
+			printf "ERROR\n" 1>&2
+		;;
+	esac
+	local BODY=$(getBody "${STRING}")
 	printf "%s\n" "${BODY}"
 }
 
@@ -49,6 +57,15 @@ function getCode {
 		local CODE=${BASH_REMATCH[2]}
 	fi
 	printf "%s\n" "${CODE}"
+}
+
+function getBody {
+	local STRING=${1}
+	if [[ $STRING =~ ^(.*)([0-9]{3})$ ]]; then
+		local BODY=${BASH_REMATCH[1]}
+		local CODE=${BASH_REMATCH[2]}
+	fi
+	printf "%s\n" "${BODY}"
 }
 
 function vspGet {
@@ -130,8 +147,8 @@ function vspLogin {
 	local RESULT=$(isSuccess "${RESPONSE}")
 	local CODE=$(getCode "${RESPONSE}")
 	if [[ $CODE =~ 2..$ ]]; then
-		ACCESS_TOKEN=$(echo $RESULT | jq -r '.value')
-		printf "%s\n" "${ACCESS_TOKEN}"
+		local TOKEN=$(echo $RESULT | jq -r '.value')
+		printf "%s\n" "${TOKEN}"
 	fi
 }
 
