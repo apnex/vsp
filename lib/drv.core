@@ -102,25 +102,46 @@ function getFile {
 		STATE+=".${BASH_REMATCH[1]}"
 	done
 	STATE+=".json"
-	#printf "${STATE}" 1>&2
 	printf "${STATE}"
 }
 
 function getThumbprint {
 	local HOST="${1}"
-	PAYLOAD=$(echo -n | openssl s_client -connect "${HOST}" 2>/dev/null)
-	PRINT=$(echo "$PAYLOAD" | openssl x509 -noout -fingerprint -sha256)
-	REGEX='^(.*)=(([0-9A-Fa-f]{2}[:])+([0-9A-Fa-f]{2}))$'
+	local PAYLOAD=$(echo -n | openssl s_client -connect "${HOST}" 2>/dev/null)
+	local PRINT=$(echo "$PAYLOAD" | openssl x509 -noout -fingerprint -sha256)
+	local REGEX='^(.*)=(([0-9A-Fa-f]{2}[:])+([0-9A-Fa-f]{2}))$'
 	if [[ $PRINT =~ $REGEX ]]; then
-		TYPE=${BASH_REMATCH[1]}
-		CODE=${BASH_REMATCH[2]}
+		local TYPE=${BASH_REMATCH[1]}
+		local CODE=${BASH_REMATCH[2]}
 	fi
 	printf "%s\n" "${CODE}" |  sed "s/\(.*\)/\L\1/g" | sed "s/://g"
 }
 
 function getCertificate {
 	local HOST="${1}"
-	PAYLOAD=$(echo -n | openssl s_client -connect "${HOST}" 2>/dev/null)
-	RESULT=$(echo "${PAYLOAD}" |  sed -e '1h;2,$H;$!d;g' -e 's/.*\(-----BEGIN\sCERTIFICATE-----.*-----END\sCERTIFICATE-----\).*/\1/g')
+	local PAYLOAD=$(echo -n | openssl s_client -connect "${HOST}" 2>/dev/null)
+	local RESULT=$(echo "${PAYLOAD}" |  sed -e '1h;2,$H;$!d;g' -e 's/.*\(-----BEGIN\sCERTIFICATE-----.*-----END\sCERTIFICATE-----\).*/\1/g')
 	printf "%s\n" "$RESULT" | sed ':a;N;$!ba;s/\n/\\\\n/g'
+}
+
+# build and output table from input dataset
+function buildTable {
+	local INPUT="${1}"
+	read -r -d '' JQTABLE <<-CONFIG
+		[(
+			[.[0] | to_entries[] | .key]
+			| ., map(length * "-")
+		),(
+			.[] | [to_entries[] | .value]
+		)]
+	CONFIG
+	echo "$INPUT" | jq -r "$JQTABLE | .[] | @tsv" | sed 's/"//g' | column -t -s $'\t'
+}
+
+## set current context
+function setContext {
+	local INPUT="${1}"
+	local ITEM="${2}"
+	local PAYLOAD=$(echo "$INPUT" | jq --tab '.[0]')
+	echo "${PAYLOAD}" >"${WORKDIR}/state/ctx.${ITEM}.json"
 }

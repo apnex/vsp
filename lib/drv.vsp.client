@@ -171,7 +171,7 @@ function vspSession {
 function buildURL {
 	local ENDPOINT="${1}"
 	local BASE="${VSPBASE}"
-	local STATE="${VSPSTATE}"
+	local STATE="${STATEDIR}"
 	local ONLINE="${VSPONLINE}"
 	if [[ "$ONLINE" == "true" ]]; then
 		local SUCCESS=$(vspSession)
@@ -182,7 +182,7 @@ function buildURL {
 		fi
 	else
 		local FILE=$(getFile "${ENDPOINT}")
-		URL="${STATE}/vmc${FILE}"
+		URL="${STATE}/vsp${FILE}"
 	fi
 	printf "$URL"
 }

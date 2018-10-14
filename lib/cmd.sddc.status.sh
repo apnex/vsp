@@ -1,28 +1,37 @@
 #!/bin/bash
-if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then ## offload to drv.core?
 	WORKDIR=${BASH_REMATCH[1]}
+	if [[ ${BASH_REMATCH[2]} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
+		ITEM=${BASH_REMATCH[1]}
+	fi
 fi
+source ${WORKDIR}/drv.core
 
-PAYLOAD=$(${WORKDIR}/drv.sddc.status.sh)
-read -r -d '' JQSPEC <<-CONFIG
-	(
-		["type", "hostname", "online", "dnsfwd", "ping", "thumbprint"]
-		| ., map(length * "-")
-	),(
-		.[] | [
-			.type,
-			.hostname,
-			.online,
-			.dnsfwd,
-			.ping,
-			.thumbprint
-		]
-	) | @tsv
+## input driver
+#INPUT=$(${WORKDIR}/drv.sddc.status.sh)
+INPUT=$(${WORKDIR}/drv.sddc.test.sh)
+
+## build record structure
+read -r -d '' INPUTSPEC <<-CONFIG
+	. | map({
+		"type": .type,
+		"hostname": .hostname,
+		"online": .online,
+		"dnsfwd": .dnsfwd,
+		"dnsrev": .dnsrev,
+		"ping": .ping,
+		"thumbprint": .thumbprint
+	})
 CONFIG
+PAYLOAD=$(echo "$INPUT" | jq -r "$INPUTSPEC")
 
+## cache context data record
+setContext "$PAYLOAD" "$ITEM"
+
+## output
 RAW=${1}
 if [[ "$RAW" == "json" ]]; then
-	echo "$PAYLOAD" | jq --tab .
+	echo "$INPUT" | jq --tab .
 else
-	echo "$PAYLOAD" | jq -r "$JQSPEC" | sed 's/"//g' | column -t -s $'\t'
+	buildTable "$PAYLOAD"
 fi

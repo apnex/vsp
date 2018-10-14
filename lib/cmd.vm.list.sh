@@ -1,27 +1,34 @@
 #!/bin/bash
-if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then ## offload to drv.core?
 	WORKDIR=${BASH_REMATCH[1]}
+	if [[ ${BASH_REMATCH[2]} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
+		TYPE=${BASH_REMATCH[1]}
+	fi
 fi
+source ${WORKDIR}/drv.core
 
-PAYLOAD=$(${WORKDIR}/drv.vm.list.sh)
-read -r -d '' JQSPEC <<-CONFIG
-	(
-		["id", "name",  "cpu_count", "memory_size_MiB", "power_state"]
-		| ., map(length * "-")
-	),(
-		.value[] | [
-			.vm,
-			.name,
-			.cpu_count,
-			.memory_size_MiB,
-			.power_state
-		]
-	) | @tsv
+## input driver
+INPUT=$(${WORKDIR}/drv.vm.list.sh)
+
+## build record structure
+read -r -d '' INPUTSPEC <<-CONFIG
+	.value | map({
+		"id": .vm,
+		"name": .name,
+		"cpu_count": .cpu_count,
+		"memory_size_MiB": .memory_size_MiB,
+		"power_state": .power_state
+	})
 CONFIG
+PAYLOAD=$(echo "$INPUT" | jq -r "$INPUTSPEC")
 
+## cache context data record
+setContext "$PAYLOAD" "$TYPE"
+
+## output
 RAW=${1}
 if [[ "$RAW" == "json" ]]; then
-	echo "$PAYLOAD" | jq --tab .
+	echo "$INPUT" | jq --tab .
 else
-	echo "$PAYLOAD" | jq -r "$JQSPEC" | sed 's/"//g' | column -t -s $'\t'
+	buildTable "$PAYLOAD"
 fi

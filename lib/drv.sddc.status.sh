@@ -3,14 +3,10 @@ if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
 	WORKDIR=${BASH_REMATCH[1]}
 fi
 source ${WORKDIR}/drv.core
-
-STATEDIR="${WORKDIR}/state"
-if [ ! -d ${STATEDIR} ]; then
-	mkdir ${STATEDIR}
-fi
 if [ -z ${SDDCDIR} ]; then
 	SDDCDIR=${WORKDIR}
 fi
+
 PARAMS=$(cat ${SDDCDIR}/sddc.parameters)
 DOMAIN=$(echo "$PARAMS" | jq -r .domain)
 DNS=$(echo "$PARAMS" | jq -r .dns)
@@ -34,20 +30,20 @@ function buildItem {
 			if [[ ! "$HOST" =~ [.] ]]; then
 				HOST+=".$DOMAIN"
 			fi
-			if [[ "$(host -t A -W 1 "$HOST" "$DNS")" =~ ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})$ ]]; then
+			if [[ "$(host -t A -W 1 "$HOST" "$DNS" 2>/dev/null)" =~ ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})$ ]]; then
 				CHECKFWD="${BASH_REMATCH[1]}"
 			fi
 		fi
 		if [[ -n "$CHECKFWD" ]]; then
-			if [[ "$(host -t SRV -W 1 "$CHECKFWD" "$DNS")" =~ ([0-9a-z.-]+)$ ]]; then
+			if [[ "$(host -t SRV -W 1 "$CHECKFWD" "$DNS" 2>/dev/null)" =~ ([0-9a-z.-]+)$ ]]; then
 				CHECKREV="${BASH_REMATCH[1]}"
 			fi
 		fi
 		printf "[$(cgreen "INFO")]: ${TYPE} [$(cgreen "status")] health [$(cgreen "${HOST}")]... [$(ccyan "SERVICES")] - SUCCESS\n" 1>&2
-		PING=$(ping -W 1 -c 1 "$HOST" &>/dev/null && echo 1 || echo 0)
-		PRINT=$(getThumbprint "$HOST":443 thumbprint 2>/dev/null)
+		local PING=$(ping -W 1 -c 1 "$HOST" &>/dev/null && echo 1 || echo 0)
+		local PRINT=$(getThumbprint "$HOST":443 thumbprint 2>/dev/null)
 		if [[ -n "${PRINT}" ]]; then
-			CERT=$(getCertificate "$HOST":443 2>/dev/null)
+			local CERT=$(getCertificate "$HOST":443 2>/dev/null)
 		fi
 		read -r -d '' JQSPEC <<-CONFIG
 			{
@@ -82,5 +78,6 @@ for KEY in $(echo "$PARAMS" | jq -c '.endpoints[]'); do
 	FINAL+=$(buildItem "$KEY")
 	COMMA=","
 done
+printf "${STATEDIR}"
 printf "[${FINAL}]" | jq --tab . >"${STATEDIR}/sddc.status.json"
 printf "[${FINAL}]" | jq --tab .
