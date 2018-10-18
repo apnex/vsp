@@ -1,27 +1,34 @@
 #!/bin/bash
-if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then ## offload to drv.core?
 	WORKDIR=${BASH_REMATCH[1]}
+	if [[ ${BASH_REMATCH[2]} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
+		TYPE=${BASH_REMATCH[1]}
+	fi
 fi
+source ${WORKDIR}/drv.core
 
-PAYLOAD=$(${WORKDIR}/drv.datastore.list.sh)
-read -r -d '' JQSPEC <<-CONFIG
-	(
-		["datastore", "name", "type", "free_space", "capacity"]
-		| ., map(length * "-")
-	),(
-		.value[] | [
-			.datastore,
-			.name,
-			.type,
-			.free_space,
-			.capacity
-		]
-	) | @tsv
+## input driver
+INPUT=$(${WORKDIR}/drv.datastore.list.sh)
+
+## build record structure
+read -r -d '' INPUTSPEC <<-CONFIG
+	.value | map({
+		"id": .datastore,
+		"name":	.name,
+		"type":	.type,
+		"free_space": .free_space,
+		"capacity": .capacity
+	})
 CONFIG
+PAYLOAD=$(echo "$INPUT" | jq -r "$INPUTSPEC")
 
+## cache context data record
+setContext "$PAYLOAD" "$TYPE"
+
+## output
 RAW=${1}
 if [[ "$RAW" == "json" ]]; then
-	echo "$PAYLOAD" | jq --tab .
+	echo "$INPUT" | jq --tab .
 else
-	echo "$PAYLOAD" | jq -r "$JQSPEC" | sed 's/"//g' | column -t -s $'\t'
+	buildTable "$PAYLOAD"
 fi

@@ -4,8 +4,8 @@
 		"guest_OS": "VMKERNEL_65",
 		"placement": {
 			"folder": "group-v3",
-			"host": "host-10",
-			"datastore": "datastore-11"
+			"host": "host-133",
+			"datastore": "datastore-134"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -15,7 +15,7 @@
 			"cores_per_socket": 4
 		},
 		"memory": {
-			"size_MiB": 8192
+			"size_MiB": 12288
 		},
 		"disks": [
 			{
@@ -46,7 +46,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-82"
+					"network": "dvportgroup-24"
 				}
 			},
 			{
@@ -57,7 +57,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-82"
+					"network": "dvportgroup-27"
 				}
 			}
 		]

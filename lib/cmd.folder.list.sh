@@ -1,25 +1,32 @@
 #!/bin/bash
-if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then ## offload to drv.core?
 	WORKDIR=${BASH_REMATCH[1]}
+	if [[ ${BASH_REMATCH[2]} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
+		TYPE=${BASH_REMATCH[1]}
+	fi
 fi
+source ${WORKDIR}/drv.core
 
-PAYLOAD=$(${WORKDIR}/drv.folder.list.sh)
-read -r -d '' JQSPEC <<-CONFIG
-	(
-		["name", "type", "folder"]
-		| ., map(length * "-")
-	),(
-		.value[] | [
-			.name,
-			.type,
-			.folder
-		]
-	) | @tsv
+## input driver
+INPUT=$(${WORKDIR}/drv.folder.list.sh)
+
+## build record structure
+read -r -d '' INPUTSPEC <<-CONFIG
+	.value | map({
+		"id": .folder,
+		"name": .name,
+		"type": .type
+	})
 CONFIG
+PAYLOAD=$(echo "$INPUT" | jq -r "$INPUTSPEC")
 
+## cache context data record
+setContext "$PAYLOAD" "$TYPE"
+
+## output
 RAW=${1}
 if [[ "$RAW" == "json" ]]; then
-	echo "$PAYLOAD" | jq --tab .
+	echo "$INPUT" | jq --tab .
 else
-	echo "$PAYLOAD" | jq -r "$JQSPEC" | sed 's/"//g' | column -t -s $'\t'
+	buildTable "$PAYLOAD"
 fi

@@ -1,11 +1,11 @@
 {
 	"spec": {
-		"name": "test02",
-		"guest_OS": "CENTOS_7_64",
+		"name": "test03",
+		"guest_OS": "OTHER_LINUX_64",
 		"placement": {
 			"folder": "group-v3",
-			"host": "host-133",
-			"datastore": "datastore-134"
+			"host": "host-10",
+			"datastore": "datastore-11"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -14,14 +14,14 @@
 			"count": 2,
 			"cores_per_socket": 2
 		},
-		"hardware_version": "VMX_13",
+		"hardware_version": "VMX_11",
 		"memory": {
 			"size_MiB": 2048
 		},
 		"disks": [
 			{
 				"new_vmdk": {
-					"capacity": 8589934592
+					"capacity": 4294967296
 				},
 				"type": "SCSI"
 			}
@@ -34,7 +34,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-24"
+					"network": "dvportgroup-27"
 				}
 			}
 		]
