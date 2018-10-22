@@ -1,17 +1,17 @@
 ## Scripts for vCenter REST API
 
-#### 1: Ensure you have JQ and CURL installed
-Ensure you meet the pre-requisites on linux to execute to scripts.
-Currently, these have been tested on Centos.
+#### 1: Ensure you have prerequisites installed
+Ensure you meet the prerequisites on linux to execute to scripts.
+Currently, these have been tested on Linux.
 
 ##### Centos
 ```shell
-yum install curl jq
+yum install curl jq bind-utils
 ```
 
 ##### Ubuntu
 ```shell
-apt-get install curl jq
+apt-get install curl jq bind-utils
 ```
 
 ##### Mac OSX
@@ -59,53 +59,53 @@ i.e `./vm.list.sh json` will bypass table formatting and show raw JSON for vms.
 
 ##### vm.list: List vms
 ```shell
-./vm.list.sh [json]
+./cmd.vm.list.sh [json]
 ```
 
 ##### vm.start: Start vm
 ```shell
-./vm.start.sh <vm-id>
+./cmd.vm.start.sh <vm-id>
 # example
-./vm.start.sh vm-102
+./cmd.vm.start.sh vm-102
 ```
 
 ##### vm.stop: Stop vm
 ```shell
-./vm.stop.sh <vm-id>
+./cmd.vm.stop.sh <vm-id>
 # example
-./vm.stop.sh vm-102
+./cmd.vm.stop.sh vm-102
 ```
 
 ##### vm.create: Create vm
 ```shell
-./vm.create.sh <vm-spec-json>
+./cmd.vm.create.sh <vm-spec-json>
 # example
-./vm.create.sh spec.vm.test01.json
+./cmd.vm.create.sh spec.vm.test01.json
 ```
 
 ##### vm.delete: Delete vm
 ```shell
-./vm.delete.sh <vm-id>
+./cmd.vm.delete.sh <vm-id>
 # example
-./vm.delete.sh vm-102
+./cmd.vm.delete.sh vm-102
 ```
 
 ##### datastore.list: List datastores
 ```shell
-./datastore.list.sh [json]
+./cmd.datastore.list.sh [json]
 ```
 
 ##### vm.list: List networks
 ```shell
-./network.list.sh [json]
+./cmd.network.list.sh [json]
 ```
 
 ##### host.list: List hosts
 ```shell
-./host.list.sh [json]
+./cmd.host.list.sh [json]
 ```
 
 ##### cluster.list: List clusters
 ```shell
-./cluster.list.sh [json]
+./cmd.cluster.list.sh [json]
 ```

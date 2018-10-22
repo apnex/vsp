@@ -24,10 +24,26 @@ PAYLOAD=$(echo "$INPUT" | jq -r "$INPUTSPEC")
 ## cache context data record
 setContext "$PAYLOAD" "$TYPE"
 
+# build filter
+FILTER=${1}
+FORMAT=${2}
+PAYLOAD=$(filter "${PAYLOAD}" "${FILTER}")
+
+## cache context data record
+setContext "$PAYLOAD" "$TYPE"
+
 ## output
-RAW=${1}
-if [[ "$RAW" == "json" ]]; then
-	echo "$INPUT" | jq --tab .
-else
-	buildTable "$PAYLOAD"
-fi
+case "${FORMAT}" in
+	json)
+		## build payload json
+		echo "${PAYLOAD}" | jq --tab .
+	;;
+	raw)
+		## build input json
+		echo "${INPUT}" | jq --tab .
+	;;
+	*)
+		## build payload table
+		buildTable "${PAYLOAD}"
+	;;
+esac

@@ -1,13 +1,19 @@
 #!/bin/bash
 # detect and resolve symlink
 if [[ -L $0 ]]; then
-	if [[ $(readlink $0) =~ ^(.*)/[^/]+$ ]]; then
+	if [[ $(readlink $0) =~ ^(.*)/([^/]+)$ ]]; then
 		WORKDIR="${BASH_REMATCH[1]}"
+		CALLED="${BASH_REMATCH[2]}"
 	fi
 else
-	if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+	if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then
 		WORKDIR="${BASH_REMATCH[1]}"
+		CALLED="${BASH_REMATCH[2]}"
 	fi
+fi
+STATEDIR="${WORKDIR}/state"
+if [ ! -d ${STATEDIR} ]; then
+	mkdir ${STATEDIR}
 fi
 
 # detect available cmds
@@ -20,7 +26,7 @@ commands() {
 	done
 	exit 1
 }
-if [ -n "$1" ]; then
+if [[ -n "$1" && $CALLED == "drv.core" ]]; then
 	if [ "$1" == "list" ]; then
 		commands
 	fi
@@ -128,20 +134,61 @@ function getCertificate {
 function buildTable {
 	local INPUT="${1}"
 	read -r -d '' JQTABLE <<-CONFIG
-		[(
-			[.[0] | to_entries[] | .key]
-			| ., map(length * "-")
-		),(
-			.[] | [to_entries[] | .value]
-		)]
+		if (.[0]?) then
+			[(
+				[.[0] | to_entries[] | .key]
+				| ., map(length * "-")
+			),(
+				.[] | [to_entries[] | .value]
+			)]
+		else . end
 	CONFIG
-	echo "$INPUT" | jq -r "$JQTABLE | .[] | @tsv" | sed 's/"//g' | column -t -s $'\t'
+	echo "$INPUT" | jq -r "$JQTABLE | .[] | @tsv" | column -t -s $'\t'
+}
+
+## filter payload with string
+function filter {
+	local PAYLOAD=${1}
+	local STRING=${2}
+	while [[ $STRING =~ ([^,]+) ]]; do
+		local FILTER="${BASH_REMATCH[1]}"
+		STRING=${STRING#*"${BASH_REMATCH[1]}"}
+		local FIELD="name"
+		local VALUE="."
+		if [[ $FILTER =~ ([^:]+):([^:]+) ]]; then
+			FIELD=${BASH_REMATCH[1]}
+			VALUE=${BASH_REMATCH[2]}
+		else
+			VALUE="${FILTER}"
+		fi
+		read -r -d '' FILTERSPEC <<-CONFIG
+			map(select(."$FIELD"|test("$VALUE";"i")))
+		CONFIG
+		PAYLOAD=$(echo "$PAYLOAD" | jq -r "$FILTERSPEC")
+	done
+	printf "%s\n" "${PAYLOAD}" | jq --tab .
 }
 
 ## set current context
 function setContext {
 	local INPUT="${1}"
 	local ITEM="${2}"
+	local STATE="${STATEDIR}/ctx.${ITEM}.json"
 	local PAYLOAD=$(echo "$INPUT" | jq --tab '.[0]')
-	echo "${PAYLOAD}" >"${WORKDIR}/state/ctx.${ITEM}.json"
+	if [[ ! "${PAYLOAD}" == null ]]; then
+		printf "%s\n" "${PAYLOAD}" >"${STATE}"
+	fi
+}
+
+## get current context
+function getContext {
+	local FILTER="${1}"
+	if [[ -z $FILTER ]]; then
+		FILTER="."
+	fi
+	echo "FILTER: ${FILTER}" 1>&2
+	local PAYLOAD=$("${WORKDIR}"/cmd.context.list.sh "${FILTER}" json | jq '.[0]')
+	if [[ ! "$PAYLOAD" == null ]]; then
+		printf "%s\n" "${PAYLOAD}" | jq -r '.id'
+	fi
 }

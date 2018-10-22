@@ -11,6 +11,7 @@ STATEDIR="${WORKDIR}/state"
 if [ ! -d ${STATEDIR} ]; then
 	mkdir ${STATEDIR}
 fi
+source ${WORKDIR}/drv.core
 
 PARAMS=$(cat ${SDDCDIR}/sddc.parameters)
 DOMAIN=$(echo "$PARAMS" | jq -r '.domain')
