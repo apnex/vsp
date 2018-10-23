@@ -18,7 +18,8 @@ fi
 
 # detect available cmds
 commands() {
-	echo "-- [COMMANDS] --"
+	#echo "-- [COMMANDS] --"
+	echo "list"
 	for FILE in ${WORKDIR}/cmd*.sh; do
 		if [[ $FILE =~ cmd[.](.+)[.]sh ]]; then
 			echo "${BASH_REMATCH[1]}"
