@@ -1,0 +1,11 @@
+## notes
+
+# pull CLI image
+docker pull apnex/vsp-cli
+docker run apnex/vsp-cli setup-params > sddc.parameters
+docker run apnex/vsp-cli setup-bash > vsp-cli
+
+# bash installation
+chmod 755 vsp-cli
+cp vsp-cli /root/bin/
+vsp-cli install

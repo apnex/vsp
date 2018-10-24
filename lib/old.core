@@ -27,23 +27,13 @@ commands() {
 	done
 	exit 1
 }
-if [[ -n "$1" && ${CALLED} == "drv.core" ]]; then
-	case "${1}" in
-		list) ## list commands
-			commands
-		;;
-		setup-params) ## output sddc.parameters
-			cat ${WORKDIR}/sddc.parameters
-		;;
-		setup-bash) ## output bash-cli
-			cat ${WORKDIR}/bash-cli
-		;;
-		*) ## execute command
-			if [ -f "${WORKDIR}/cmd.${1}.sh" ]; then
-				eval "${WORKDIR}/cmd.${1}.sh ${2} ${3} ${4}"
-			fi
-		;;
-	esac
+if [[ -n "$1" && $CALLED == "drv.core" ]]; then
+	if [ "$1" == "list" ]; then
+		commands
+	fi
+	if [ -f "${WORKDIR}/cmd.${1}.sh" ]; then
+		eval "${WORKDIR}/cmd.${1}.sh ${2} ${3} ${4}"
+	fi
 fi
 
 # get OSNAME
