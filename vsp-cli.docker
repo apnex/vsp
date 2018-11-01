@@ -5,7 +5,7 @@ RUN apk --no-cache add \
 	curl \
 	jq
 COPY lib /root/vsp
-RUN ln -s /root/vsp/drv.core /usr/bin/vsp
+RUN ln -s /root/vsp/drv.core /usr/bin/vsp-cli
 RUN mkdir -p /cfg
 ENV SDDCDIR "/cfg"
-ENTRYPOINT ["vsp"]
+ENTRYPOINT ["vsp-cli"]

@@ -34,6 +34,7 @@ function buildItem {
 				CHECKFWD="${BASH_REMATCH[1]}"
 			fi
 		fi
+
 		if [[ -n "$CHECKFWD" ]]; then
 			if [[ "$(host -t SRV -W 1 "$CHECKFWD" "$DNS" 2>/dev/null)" =~ ([0-9a-z.-]+)$ ]]; then
 				CHECKREV="${BASH_REMATCH[1]}"
@@ -71,6 +72,7 @@ function buildItem {
 	fi
 }
 
+# convert to jq merge
 FINAL=""
 COMMA=""
 for KEY in $(echo "$PARAMS" | jq -c '.endpoints[]'); do
@@ -78,6 +80,5 @@ for KEY in $(echo "$PARAMS" | jq -c '.endpoints[]'); do
 	FINAL+=$(buildItem "$KEY")
 	COMMA=","
 done
-printf "${STATEDIR}"
 printf "[${FINAL}]" | jq --tab . >"${STATEDIR}/sddc.status.json"
 printf "[${FINAL}]" | jq --tab .

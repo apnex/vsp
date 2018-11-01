@@ -71,8 +71,10 @@ function getBody {
 
 function vspGet {
 	local URL=${1}
+	local BASE=${VSPBASE}
+	local STATE
 	if [[ "$VSPONLINE" == "true" ]]; then
-		local FILE=$(getFile "${URL}" "${VSPBASE}")
+		local FILE=$(getFile "${URL}" "${BASE}")
 		STATE="${STATEDIR}/vsp${FILE}"
 		RESPONSE=$(curl -k -w "%{http_code}" -X GET \
 			-H "vmware-api-session-id: $(cat ${VSPSESSION})" \
