@@ -1,11 +1,11 @@
 {
 	"spec": {
-		"name": "centos-hw13-02",
+		"name": "k8s-01",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
 			"folder": "group-v3",
-			"host": "host-10",
-			"datastore": "datastore-11"
+			"host": "host-133",
+			"datastore": "datastore-134"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -14,14 +14,13 @@
 			"count": 2,
 			"cores_per_socket": 2
 		},
-		"hardware_version": "VMX_13",
 		"memory": {
 			"size_MiB": 2048
 		},
 		"disks": [
 			{
 				"new_vmdk": {
-					"capacity": 21474836480
+					"capacity": 8589934592
 				},
 				"type": "SCSI"
 			}
@@ -34,7 +33,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-62"
+					"network": "dvportgroup-24"
 				}
 			}
 		]

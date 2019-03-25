@@ -4,8 +4,8 @@
 		"guest_OS": "VMKERNEL_65",
 		"placement": {
 			"folder": "group-v3",
-			"host": "host-10",
-			"datastore": "datastore-11"
+			"host": "host-133",
+			"datastore": "datastore-134"
 		},
 		"boot": {
 			"type": "BIOS"

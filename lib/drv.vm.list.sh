@@ -5,10 +5,10 @@ fi
 source ${WORKDIR}/drv.core
 source ${WORKDIR}/drv.vsp.client
 
-#VMID=${1}
+VMID=${1}
 if [[ -n "${VSPHOST}" ]]; then
 	ITEM="vm"
-	#CALL="/${VMID}"
+	CALL="/${VMID}"
 	URL=$(buildURL "${ITEM}${CALL}")
 	if [[ -n "${URL}" ]]; then
 		printf "[$(cgreen "INFO")]: vsp [$(cgreen "$ITEM.list")] ${ITEM} [$(cgreen "$URL")]... " 1>&2

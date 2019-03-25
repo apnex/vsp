@@ -5,9 +5,6 @@ fi
 source ${WORKDIR}/drv.core
 source ${WORKDIR}/drv.vsp.client
 
-#			},
-#			{
-#				"type": "CDROM"
 function makeBody {
 	read -r -d '' BODY <<-CONFIG
 	{
@@ -17,6 +14,9 @@ function makeBody {
 				"disks": [
 					"2000"
 				]
+			},
+			{
+				"type": "CDROM"
 			},
 			{
 				"type": "ETHERNET",

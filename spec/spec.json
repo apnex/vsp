@@ -1,0 +1,9 @@
+# MacPool
+{
+	ranges: [
+		{
+			"start": "aa:bb:cc:dd:ee:ff",
+			"end": "bb:cc:aa:dd:ee:ff"
+		}
+	]
+}

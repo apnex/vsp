@@ -1,16 +1,16 @@
 #!/bin/bash
 
 ## start manager
-vsp-cli vm.list name:manager,power_state:off
-vsp-cli vm.start run
+./cmd.vm.list.sh name:manager,power_state:off
+./cmd.vm.start.sh run
 
 ## start controller
-vsp-cli vm.list name:controller,power_state:off
-vsp-cli vm.start run
+./cmd.vm.list.sh name:controller,power_state:off
+./cmd.vm.start.sh run
 
 # start edge
-vsp-cli vm.list name:edge,power_state:off
-vsp-cli vm.start run
+./cmd.vm.list.sh name:edge,power_state:off
+./cmd.vm.start.sh run
 
 ## list
-vsp-cli vm.list
+./cmd.vm.list.sh

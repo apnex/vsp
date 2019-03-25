@@ -41,7 +41,7 @@ if [[ "${BADARGS}" == 0 ]]; then
 		URL=$(buildURL "${ITEM}${CALL}")
 		if [[ -n "${URL}" ]]; then
 			printf "[$(cgreen "INFO")]: vsp [$(cgreen "vm.stop")] ${ITEM} [$(cgreen "${URL}")]... " 1>&2
-			#vspDelete "${URL}"
+			vspDelete "${URL}"
 		fi
 	fi
 else

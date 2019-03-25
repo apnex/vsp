@@ -1,11 +1,11 @@
 {
 	"spec": {
-		"name": "test02",
+		"name": "test01",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
-			"resource_pool": "resgroup-49",
-			"folder": "group-v44",
-			"datastore": "datastore-61"
+			"folder": "group-v3",
+			"host": "host-3141",
+			"datastore": "datastore-3142"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -32,8 +32,8 @@
 				"type": "VMXNET3",
 				"upt_compatibility_enabled": true,
 				"backing": {
-					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-70"
+					"type": "OPAQUE_NETWORK",
+					"network": "network-o3147"
 				}
 			}
 		]
