@@ -46,11 +46,11 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-24"
+					"network": "dvportgroup-27"
 				}
 			},
 			{
-				"start_connected": false,
+				"start_connected": true,
 				"mac_address": "00:de:ad:be:ef:12",
 				"mac_type": "MANUAL",
 				"type": "VMXNET3",
