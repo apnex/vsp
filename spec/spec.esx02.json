@@ -50,7 +50,7 @@
 				}
 			},
 			{
-				"start_connected": false,
+				"start_connected": true,
 				"mac_address": "00:de:ad:be:ef:22",
 				"mac_type": "MANUAL",
 				"type": "VMXNET3",
