@@ -1,11 +1,11 @@
 {
 	"spec": {
-		"name": "k8s-01",
+		"name": "router",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
-			"folder": "group-v3",
-			"host": "host-133",
-			"datastore": "datastore-134"
+			"folder": "group-v662",
+			"host": "host-671",
+			"datastore": "datastore-672"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -23,18 +23,6 @@
 					"capacity": 8589934592
 				},
 				"type": "SCSI"
-			}
-		],
-		"nics": [
-			{
-				"start_connected": true,
-				"mac_type": "GENERATED",
-				"type": "VMXNET3",
-				"upt_compatibility_enabled": true,
-				"backing": {
-					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-24"
-				}
 			}
 		]
 	}

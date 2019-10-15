@@ -26,13 +26,13 @@ done
 ## output
 FORMAT=${1}
 case "${FORMAT}" in
-	plan)
-		## build context table
-		buildTable "${CONTEXT}"
-	;;
 	run)
 		## call driver
 		buildTable "${CONTEXT}"
 		${WORKDIR}/drv.vm.delete.sh "${MYARGS[@]}"
+	;;
+	*)
+		## build context table
+		buildTable "${CONTEXT}"
 	;;
 esac

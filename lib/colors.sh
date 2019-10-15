@@ -17,4 +17,7 @@ for fgbg in 38 48 ; do # Foreground / Background
     echo # New line
 done
 
+# testing foreground text
+printf "\e[48;5;%sm%3s\e[0m" 128 "--THISISATEST--"
+
 exit 0

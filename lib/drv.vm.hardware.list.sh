@@ -9,7 +9,7 @@ ID=${1}
 if [[ -n "${ID}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		ITEM="vm"
-		CALL="/${ID}/hardware/disk"
+		CALL="/${ID}"
 		URL=$(buildURL "${ITEM}${CALL}")
 		if [[ -n "${URL}" ]]; then
 			printf "[$(cgreen "INFO")]: vsp [$(cgreen "vm.boot.list")] ${ITEM} [$(cgreen "${URL}")]... " 1>&2
