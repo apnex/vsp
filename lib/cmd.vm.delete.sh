@@ -1,16 +1,20 @@
 #!/bin/bash
-if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then
-	WORKDIR=${BASH_REMATCH[1]}
-	if [[ ${BASH_REMATCH[2]} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
+if [[ $(readlink -f $0) =~ ^(.*)/([^/]+)$ ]]; then
+	WORKDIR="${BASH_REMATCH[1]}"
+	CALLED="${BASH_REMATCH[2]}"
+	if [[ ${CALLED} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
 		TYPE=${BASH_REMATCH[1]}
 	fi
+fi
+LOCAL="0"
+if [[ $0 =~ ^[.] ]]; then
+	LOCAL="1"
 fi
 source ${WORKDIR}/drv.core
 
 ## inputs - learn from drv?
 INPUTS=()
 INPUTS+=("vm.list")
-#INPUTS+=("network.list")
 
 ## build context data
 function join_by { local IFS="${1}"; shift; echo "${*}"; }
@@ -29,11 +33,11 @@ case "${FORMAT}" in
 	run)
 		## call driver
 		buildTable "${CONTEXT}"
-		${WORKDIR}/drv.vm.delete.sh "${MYARGS[@]}"
+		"${WORKDIR}/drv.${TYPE}.sh" "${MYARGS[@]}"
 	;;
 	*)
 		## build context table
-		printf "[$(cgreen "INFO")]: command usage: $(cgreen "vm.delete") $(ccyan "[ run ]")\n" 1>&2
+		printf "[$(cgreen "INFO")]: command usage: $(cgreen "${TYPE}") $(ccyan "[ run ]")\n" 1>&2
 		buildTable "${CONTEXT}"
 	;;
 esac

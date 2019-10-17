@@ -1,9 +1,14 @@
 #!/bin/bash
-if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then ## offload to drv.core?
-	WORKDIR=${BASH_REMATCH[1]}
-	if [[ ${BASH_REMATCH[2]} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
+if [[ $(readlink -f $0) =~ ^(.*)/([^/]+)$ ]]; then
+	WORKDIR="${BASH_REMATCH[1]}"
+	CALLED="${BASH_REMATCH[2]}"
+	if [[ ${CALLED} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
 		TYPE=${BASH_REMATCH[1]}
 	fi
+fi
+LOCAL="0"
+if [[ $0 =~ ^[.] ]]; then
+	LOCAL="1"
 fi
 source ${WORKDIR}/drv.core
 
