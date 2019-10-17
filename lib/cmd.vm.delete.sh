@@ -33,6 +33,7 @@ case "${FORMAT}" in
 	;;
 	*)
 		## build context table
+		printf "[$(cgreen "INFO")]: command usage: $(cgreen "vm.delete") $(ccyan "[ run ]")\n" 1>&2
 		buildTable "${CONTEXT}"
 	;;
 esac

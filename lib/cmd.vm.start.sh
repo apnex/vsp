@@ -26,13 +26,14 @@ done
 ## output
 FORMAT=${1}
 case "${FORMAT}" in
-	plan)
-		## build context table
-		buildTable "${CONTEXT}"
-	;;
 	run)
 		## call driver
 		buildTable "${CONTEXT}"
 		${WORKDIR}/drv.vm.start.sh "${MYARGS[@]}"
+	;;
+	*)
+		## build context table
+		printf "[$(cgreen "INFO")]: command usage: $(cgreen "vm.start") $(ccyan "[ run ]")\n" 1>&2
+		buildTable "${CONTEXT}"
 	;;
 esac
