@@ -1,6 +1,6 @@
 {
 	"spec": {
-		"name": "router",
+		"name": "router2",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
 			"folder": "group-v662",

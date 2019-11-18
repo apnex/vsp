@@ -1,6 +1,6 @@
 {
 	"spec": {
-		"name": "router",
+		"name": "test01",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
 			"folder": "group-v662",
@@ -17,12 +17,39 @@
 		"memory": {
 			"size_MiB": 2048
 		},
+		"sata_adapters": [
+			{
+				"type": "AHCI"
+			}
+		],
 		"disks": [
 			{
+				"type": "SATA",
 				"new_vmdk": {
 					"capacity": 8589934592
-				},
-				"type": "SCSI"
+				}
+			}
+		],
+		"cdroms": [
+			{
+				"start_connected": true,
+				"type": "SATA",
+				"backing": {
+					"iso_file": "[datastore1] iso/centos.iso",
+					"type": "ISO_FILE"
+				}
+			}
+		],
+		"nics": [
+			{
+				"start_connected": true,
+				"mac_type": "GENERATED",
+				"type": "VMXNET3",
+				"upt_compatibility_enabled": true,
+				"backing": {
+					"type": "DISTRIBUTED_PORTGROUP",
+					"network": "dvportgroup-684"
+				}
 			}
 		]
 	}

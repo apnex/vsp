@@ -3,9 +3,9 @@
 		"name": "esx01.lab",
 		"guest_OS": "VMKERNEL_65",
 		"placement": {
-			"folder": "group-v3",
-			"host": "host-133",
-			"datastore": "datastore-134"
+			"folder": "group-v662",
+			"host": "host-671",
+			"datastore": "datastore-672"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -17,24 +17,29 @@
 		"memory": {
 			"size_MiB": 12288
 		},
+		"sata_adapters": [
+			{
+				"type": "AHCI"
+			}
+		],
 		"disks": [
 			{
 				"new_vmdk": {
 					"capacity": 4294967296
 				},
-				"type": "SCSI"
+				"type": "SATA"
 			},
 			{
 				"new_vmdk": {
 					"capacity": 21474836480
 				},
-				"type": "SCSI"
+				"type": "SATA"
 			},
 			{
 				"new_vmdk": {
 					"capacity": 107374182400
 				},
-				"type": "SCSI"
+				"type": "SATA"
 			}
 		],
 		"nics": [
@@ -46,7 +51,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-27"
+					"network": "dvportgroup-686"
 				}
 			},
 			{
@@ -57,7 +62,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "DISTRIBUTED_PORTGROUP",
-					"network": "dvportgroup-27"
+					"network": "dvportgroup-686"
 				}
 			}
 		]
