@@ -1,0 +1,9 @@
+{
+	"spec": {
+		"folder": "group-h663",
+		"thumbprint_verification": "NONE",
+		"hostname": "esx01.lab",
+		"user_name": "root",
+		"password": "VMware1!"
+	}
+}

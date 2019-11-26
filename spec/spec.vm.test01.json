@@ -3,9 +3,9 @@
 		"name": "test01",
 		"guest_OS": "CENTOS_7_64",
 		"placement": {
-			"folder": "group-v3",
-			"host": "host-3242",
-			"datastore": "datastore-3261"
+			"folder": "group-v662",
+			"host": "host-817",
+			"datastore": "datastore-818"
 		},
 		"boot": {
 			"type": "BIOS"
@@ -33,7 +33,7 @@
 				"upt_compatibility_enabled": true,
 				"backing": {
 					"type": "OPAQUE_NETWORK",
-					"network": "network-o3202"
+					"network": "network-o867"
 				}
 			}
 		]
