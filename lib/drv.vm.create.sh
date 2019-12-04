@@ -2,7 +2,6 @@
 if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
 	WORKDIR=${BASH_REMATCH[1]}
 fi
-source ${WORKDIR}/drv.core
 source ${WORKDIR}/drv.vsp.client
 
 function makeBody {
@@ -11,10 +10,10 @@ function makeBody {
 }
 
 SPEC=${1}
+ITEM="vm"
 if [[ -n "${SPEC}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		BODY=$(makeBody "${SPEC}")
-		ITEM="vm"
 		CALL=""
 		URL=$(buildURL "${ITEM}${CALL}")
 		if [[ -n "${URL}" ]]; then

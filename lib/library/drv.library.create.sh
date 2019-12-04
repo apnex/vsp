@@ -1,6 +1,8 @@
 #!/bin/bash
-source drv.core
-source drv.vsp.client
+if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+	WORKDIR=${BASH_REMATCH[1]}
+fi
+source ${WORKDIR}/drv.vsp.client
 
 CLIENT_TOKEN=$(uuidgen)
 printf "${CLIENT_TOKEN}\n" 1>&2
@@ -26,10 +28,10 @@ function makeBody {
 }
 
 VMSPEC=${1}
+ITEM="vm"
 #if [[ -n "${VMSPEC}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		BODY=$(makeBody)
-		ITEM="vm"
 		CALL=""
 		URL=$(buildURL "${ITEM}${CALL}")
 		URL="https://${VSPHOST}/rest/com/vmware/content/local-library"

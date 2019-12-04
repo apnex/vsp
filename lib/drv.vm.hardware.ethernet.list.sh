@@ -2,14 +2,13 @@
 if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
 	WORKDIR=${BASH_REMATCH[1]}
 fi
-source ${WORKDIR}/drv.core
 source ${WORKDIR}/drv.vsp.client
 
 ID=${1}
 NIC=${2}
+ITEM="vm"
 if [[ -n "${ID}" && "${NIC}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
-		ITEM="vm"
 		CALL="/${ID}/hardware/ethernet/${NIC}"
 		URL=$(buildURL "${ITEM}${CALL}")
 		if [[ -n "${URL}" ]]; then

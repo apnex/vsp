@@ -2,7 +2,6 @@
 if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
 	WORKDIR=${BASH_REMATCH[1]}
 fi
-source ${WORKDIR}/drv.core
 source ${WORKDIR}/drv.vsp.client
 
 # define inputs
@@ -34,9 +33,9 @@ function getValue() {
 
 # set paramaters and execute
 ID=$(getValue "vm.list" "${INPUTS[@]}")
+ITEM="vm"
 if [[ "${BADARGS}" == 0 ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
-		ITEM="vm"
 		CALL="/${ID}/power/stop"
 		URL=$(buildURL "${ITEM}${CALL}")
 		if [[ -n "${URL}" ]]; then

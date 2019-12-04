@@ -10,7 +10,7 @@ LOCAL="0"
 if [[ $0 =~ ^[.] ]]; then
 	LOCAL="1"
 fi
-source ${WORKDIR}/drv.core
+source ${WORKDIR}/mod.core
 
 ## inputs - learn from drv?
 INPUTS=()

@@ -5,7 +5,7 @@ if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then
 		TYPE=${BASH_REMATCH[1]}
 	fi
 fi
-source ${WORKDIR}/drv.core
+source ${WORKDIR}/mod.core
 
 ## input driver
 INPUT=$(${WORKDIR}/drv.context.list.sh)

@@ -1,6 +1,8 @@
 #!/bin/bash
-source drv.core
-source drv.vsp.client
+if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+	WORKDIR=${BASH_REMATCH[1]}
+fi
+source ${WORKDIR}/drv.vsp.client
 
 CLIENT_TOKEN=$(cat uuid)
 printf "${CLIENT_TOKEN}\n" 1>&2
@@ -28,10 +30,10 @@ function makeBody {
 }
 
 UPDATE_SESSION=${1}
+ITEM="update-session"
 #if [[ -n "${VMSPEC}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		BODY=$(makeBody)
-		ITEM="update-session"
 		CALL=""
 		URL=$(buildURL "${ITEM}${CALL}")
 		URL="https://${VSPHOST}/rest/com/vmware/content/library/item/updatesession/file/id:${UPDATE_SESSION}?~action=add"

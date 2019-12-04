@@ -6,7 +6,7 @@ STATEDIR="${WORKDIR}/state" ## offload to core?
 if [ ! -d ${STATEDIR} ]; then
 	mkdir ${STATEDIR}
 fi
-source ${WORKDIR}/drv.core
+source ${WORKDIR}/mod.core
 
 ## check context
 ID=${1}

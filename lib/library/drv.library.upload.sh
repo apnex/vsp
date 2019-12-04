@@ -1,6 +1,8 @@
 #!/bin/bash
-source drv.core
-source drv.vsp.client
+if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
+	WORKDIR=${BASH_REMATCH[1]}
+fi
+source ${WORKDIR}/drv.vsp.client
 
 ISO_FILE="centos.iso"
 

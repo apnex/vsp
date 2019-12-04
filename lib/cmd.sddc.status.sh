@@ -1,11 +1,11 @@
 #!/bin/bash
-if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then ## offload to drv.core?
+if [[ $0 =~ ^(.*)/([^/]+)$ ]]; then ## offload to mod.core?
 	WORKDIR=${BASH_REMATCH[1]}
 	if [[ ${BASH_REMATCH[2]} =~ ^[^.]+[.](.+)[.]sh$ ]]; then
 		TYPE=${BASH_REMATCH[1]}
 	fi
 fi
-source ${WORKDIR}/drv.core
+source ${WORKDIR}/mod.core
 
 ## input driver
 INPUT=$(${WORKDIR}/drv.sddc.status.sh)

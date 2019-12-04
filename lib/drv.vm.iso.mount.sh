@@ -2,7 +2,7 @@
 if [[ $0 =~ ^(.*)/[^/]+$ ]]; then
 	WORKDIR=${BASH_REMATCH[1]}
 fi
-source ${WORKDIR}/drv.core
+source ${WORKDIR}/mod.core
 source ${WORKDIR}/drv.vsp.client
 
 function makeBody {
@@ -16,10 +16,10 @@ function makeBody {
 
 LIBRARY=${1}
 ID=${2}
+ITEM="vm"
 if [[ -n "${ID}" ]]; then
 	if [[ -n "${VSPHOST}" ]]; then
 		BODY=$(makeBody "${ID}")
-		ITEM="vm"
 		CALL=""
 		URL=$(buildURL "${ITEM}${CALL}")
 		URL="https://${VSPHOST}/rest/com/vmware/vcenter/iso/image/id:${LIBRARY}?~action=mount"
